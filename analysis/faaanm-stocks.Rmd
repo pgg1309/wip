@@ -1,0 +1,58 @@
+---
+title: "Earnings of FAAANM's stocks"
+author: "Dr. Paulo Gustavo Grahl, CFA"
+date: "2022-05-17"
+output: 
+  workflowr::wflow_html:
+    toc: false
+editor_options:
+  chunk_output_type: console
+---
+
+## Introduction
+
+```{r include=FALSE}
+require(tidyverse)
+require(lubridate)
+require(readxl)
+require(tsibble)
+
+
+theme_set(theme_light())
+
+sp500 <- read_rds("output/faaanm-stocks/sp500_monthly.rds")
+
+```
+
+## FAAANM
+Existe um 'consenso' que boa parte dos lucros do S&P são gerados por poucas empresas. Me chamou atenção, em particular, o gráfico abaixo que circulou recentemente comparando o lucro de 6 empresas com o lucro do S&P. 
+
+![](assets/faaanm-stocks.Rmd/Screen_Capture_-_May_17__5_42_PM.png)
+
+Abaixo o lucro das empresas consideradas no acrônimo *FAAANM*:
+
+```{r echo=FALSE, fig.width=9}
+faaanm <- c("FB.O", "GOOGL.O", "AAPL.O", "AMZN.O", "NFLX.O", "MSFT.O")
+
+filter(sp500, ticker %in% faaanm, code1 == "SNIS") %>% 
+  filter_index("2010 Jan" ~.) %>% 
+  ggplot(aes(x=period, y = value)) + 
+  geom_line(size = 1) +
+  scale_y_continuous(
+    labels = scales::label_dollar(accuracy = 1, scale = 1e-9),
+    breaks = scales::breaks_extended(n = 10),
+    sec.axis = dup_axis(name = NULL)) +
+  scale_x_yearmonth(
+    labels = scales::label_date_short(),
+    breaks = scales::breaks_pretty(n = 6)
+  ) + 
+  labs(
+    title = "Income Available to Common Shares",
+    subtitle = "TTM",
+    x = NULL,
+    y = "bn"
+  ) +
+  facet_wrap(vars(ticker))
+
+```
+

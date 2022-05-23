@@ -27,7 +27,7 @@ sp500 <- read_rds("output/faaanm-stocks/sp500_monthly.rds")
 ## FAAANM
 Existe um 'consenso' que boa parte dos lucros do S&P são gerados por poucas empresas. Me chamou atenção, em particular, o gráfico abaixo que circulou recentemente comparando o lucro de 6 empresas com o lucro do S&P. 
 
-![](assets/faaanm-stocks.Rmd/Screen_Capture_-_May_17__5_42_PM.png)
+![](assets/faaanm-stocks/Screen_Capture_-_May_17__5_42_PM.png)
 
 Abaixo o lucro das empresas consideradas no acrônimo *FAAANM*:
 
@@ -53,6 +53,121 @@ filter(sp500, ticker %in% faaanm, code1 == "SNIS") %>%
     y = "bn"
   ) +
   facet_wrap(vars(ticker))
+
+```
+
+
+Excluindo o lucro total destas empresas do total do S&P obtemos:
+```{r echo=FALSE, fig.width=9}
+# Empresas com NA no lucro pos Dec 2010
+no_snis_data <- filter(sp500, code1 == "SNIS") %>% 
+  filter_index("2010 Dec" ~. ) %>%
+  # add NAs at the start
+  fill_gaps(.full = start()) %>% 
+  # select ticker with NAs %>% 
+  filter(is.na(value)) %>% 
+  pull(ticker) %>% unique()
+
+
+filter(sp500, code1 == "SNIS", !ticker %in% no_snis_data) %>% 
+  filter_index("2010 Dec" ~. ) %>% 
+  update_tsibble(key = 'ticker') %>% 
+  # Extends tsibble to pad end data
+  fill_gaps(.full = end()) %>% 
+  # fill end points with latest data 
+  fill(value, .direction = "down") %>% 
+  select(-name, -code1) %>% 
+  pivot_wider(names_from = 'ticker', values_from = value) %>% 
+  rowwise() %>% 
+  mutate(
+    total = sum(c_across(-period)),
+    faaanm = sum(c_across(all_of(faaanm))),
+    ex.faaanm = total - faaanm
+    ) %>% 
+  ungroup() %>% 
+  select(period, total, ex.faaanm) %>% 
+  pivot_longer(-period) %>% 
+  ggplot(aes(x=period, y=value, color = name)) + 
+  geom_line(size=1) +
+  scale_y_continuous(
+    labels = scales::label_dollar(accuracy = 1, scale = 1e-9),
+    breaks = scales::breaks_extended(n = 10),
+    sec.axis = dup_axis(name = NULL)) +
+  scale_x_yearmonth(
+    labels = scales::label_date_short(),
+    breaks = scales::breaks_pretty(n = 6)
+  ) + 
+  labs(
+    title = "S&P Earnings with and without FAAANM stocks",
+    subtitle = "TTM (missing data carried forward)",
+    x = NULL, 
+    y = "bn", 
+    color = NULL
+  ) +
+  theme(legend.position = 'bottom')
+  
+```
+
+Como podemos ver o lucro das FAAANM representa cerca de USD 300bn, um pouco mais de 15% do lucro total do S&P 500. Mas claramente diferente do resultado implícito no primeiro gráfico mostrado acima.
+
+```{r include=FALSE}
+snis_index <- filter(sp500, code1 == "SNIS", !ticker %in% no_snis_data) %>% 
+  filter_index("2010 Dec" ~. ) %>% 
+  update_tsibble(key = 'ticker') %>% 
+  # Extends tsibble to pad end data
+  fill_gaps(.full = end()) %>% 
+  # fill end points with latest data 
+  fill(value, .direction = "down") %>% 
+  select(-name, -code1) %>% 
+  pivot_wider(names_from = 'ticker', values_from = value) %>% 
+  rowwise() %>% 
+  mutate(
+    total = sum(c_across(-period)),
+    faaanm = sum(c_across(all_of(faaanm))),
+    ex.faaanm = total - faaanm
+    ) %>% 
+  ungroup() %>% 
+  select(period, total, ex.faaanm) %>% 
+  mutate(total = total / total[1] * 100, ex.faaanm = ex.faaanm / ex.faaanm[1] * 100)
+```
+
+
+Abaixo reproduzo o resultado acima mas normalizando os lucros para 100 no início do período. Claramente os lucros das empresas FAAANM impulsionaram o lucro total do S&P, mas não na magnitude implicitamente sugerida pelo primeiro gráfico. O crescimento do lucro total desde 2010 é mostrado na tabela abaixo:
+
+```{r echo=FALSE}
+nobs <- nrow(snis_index)-1
+
+snis_index %>% slice_tail() %>% 
+    mutate(total = ((total/100)^(12/nobs)-1)*100,
+         ex.faaanm = ((ex.faaanm/100)^(12/nobs)-1)*100,
+         gap = total - ex.faaanm) %>% 
+  kableExtra::kbl(digits = 1, caption = "Crescimento de lucro desde 2010 (anualizado)") %>% 
+  kableExtra::kable_classic(full_width = FALSE)
+
+```
+
+
+```{r echo=FALSE, fig.width=9}
+snis_index %>% 
+  pivot_longer(-period) %>% 
+  ggplot(aes(x=period, y=value, color = name)) + 
+  geom_line(size=1) +
+  scale_y_continuous(
+    breaks = scales::breaks_extended(n = 10),
+    sec.axis = dup_axis(name = NULL)) +
+  scale_x_yearmonth(
+    labels = scales::label_date_short(),
+    breaks = scales::breaks_pretty(n = 6)
+  ) + 
+  labs(
+    title = "S&P Earnings with and without FAAANM stocks",
+    subtitle = "TTM (missing data carried forward)",
+    x = NULL, 
+    y = "index, Dec 2010 = 100", 
+    color = NULL
+  ) +
+  theme(legend.position = 'bottom')
+
 
 ```
 

@@ -27,7 +27,7 @@ sp500 <- read_rds("output/faaanm-stocks/sp500_monthly.rds")
 ## FAAANM
 Existe um 'consenso' que boa parte dos lucros do S&P são gerados por poucas empresas. Me chamou atenção, em particular, o gráfico abaixo que circulou recentemente comparando o lucro de 6 empresas com o lucro do S&P. 
 
-![](assets/Screen_Capture_-_May_17__5_42_PM.png)
+![](assets/Screen_Capture_-_May_17__5_42_PM.png){width=65%}
 
 Abaixo o lucro das empresas consideradas no acrônimo *FAAANM*:
 

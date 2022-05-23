@@ -34,6 +34,8 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
 <link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
 <link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 
@@ -448,15 +450,15 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcompgg1309wiptreec3845aecc9349d8cb3e7333f13d55404eef49152targetblankc3845aea">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcompgg1309wiptreeaa4dd47c8347cd689d1558a07f27bbd70131c52dtargetblankaa4dd47a">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/pgg1309/wip/tree/c3845aecc9349d8cb3e7333f13d55404eef49152" target="_blank">c3845ae</a>
+<a href="https://github.com/pgg1309/wip/tree/aa4dd47c8347cd689d1558a07f27bbd70131c52d" target="_blank">aa4dd47</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcompgg1309wiptreec3845aecc9349d8cb3e7333f13d55404eef49152targetblankc3845aea"
+id="strongRepositoryversionstrongahrefhttpsgithubcompgg1309wiptreeaa4dd47c8347cd689d1558a07f27bbd70131c52dtargetblankaa4dd47a"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -466,7 +468,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/pgg1309/wip/tree/c3845aecc9349d8cb3e7333f13d55404eef49152" target="_blank">c3845ae</a>.
+<a href="https://github.com/pgg1309/wip/tree/aa4dd47c8347cd689d1558a07f27bbd70131c52d" target="_blank">aa4dd47</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -543,10 +545,58 @@ por poucas empresas. Me chamou atenção, em particular, o gráfico abaixo
 que circulou recentemente comparando o lucro de 6 empresas com o lucro
 do S&amp;P.</p>
 <p><img
-src="assets/faaanm-stocks.Rmd/Screen_Capture_-_May_17__5_42_PM.png" /></p>
+src="assets/faaanm-stocks/Screen_Capture_-_May_17__5_42_PM.png" /></p>
 <p>Abaixo o lucro das empresas consideradas no acrônimo
 <em>FAAANM</em>:</p>
 <p><img src="figure/faaanm-stocks.Rmd/unnamed-chunk-2-1.png" width="864" style="display: block; margin: auto;" /></p>
+<p>Excluindo o lucro total destas empresas do total do S&amp;P obtemos:
+<img src="figure/faaanm-stocks.Rmd/unnamed-chunk-3-1.png" width="864" style="display: block; margin: auto;" /></p>
+<p>Como podemos ver o lucro das FAAANM representa cerca de USD 300bn, um
+pouco mais de 15% do lucro total do S&amp;P 500. Mas claramente
+diferente do resultado implícito no primeiro gráfico mostrado acima.</p>
+<p>Abaixo reproduzo o resultado acima mas normalizando os lucros para
+100 no início do período. Claramente os lucros das empresas FAAANM
+impulsionaram o lucro total do S&amp;P, mas não na magnitude
+implicitamente sugerida pelo primeiro gráfico. O crescimento do lucro
+total desde 2010 é mostrado na tabela abaixo:</p>
+<table class=" lightable-classic" style="font-family: &quot;Arial Narrow&quot;, &quot;Source Sans Pro&quot;, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+Crescimento de lucro desde 2010 (anualizado)
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+period
+</th>
+<th style="text-align:right;">
+total
+</th>
+<th style="text-align:right;">
+ex.faaanm
+</th>
+<th style="text-align:right;">
+gap
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+2022 Apr
+</td>
+<td style="text-align:right;">
+8.8
+</td>
+<td style="text-align:right;">
+7.7
+</td>
+<td style="text-align:right;">
+1.1
+</td>
+</tr>
+</tbody>
+</table>
+<p><img src="figure/faaanm-stocks.Rmd/unnamed-chunk-6-1.png" width="864" style="display: block; margin: auto;" /></p>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -579,23 +629,24 @@ other attached packages:
 [13] workflowr_1.7.0
 
 loaded via a namespace (and not attached):
- [1] Rcpp_1.0.8.3     getPass_0.2-2    ps_1.7.0         assertthat_0.2.1
- [5] rprojroot_2.0.3  digest_0.6.29    utf8_1.2.2       R6_2.5.1        
- [9] cellranger_1.1.0 backports_1.4.1  reprex_2.0.1     evaluate_0.15   
-[13] highr_0.9        httr_1.4.3       pillar_1.7.0     rlang_1.0.2     
-[17] rstudioapi_0.13  whisker_0.4      callr_3.7.0      jquerylib_0.1.4 
-[21] rmarkdown_2.14   labeling_0.4.2   munsell_0.5.0    anytime_0.3.9   
-[25] broom_0.8.0      compiler_4.2.0   httpuv_1.6.5     modelr_0.1.8    
-[29] xfun_0.31        pkgconfig_2.0.3  htmltools_0.5.2  tidyselect_1.1.2
-[33] fansi_1.0.3      withr_2.5.0      crayon_1.5.1     tzdb_0.3.0      
-[37] dbplyr_2.1.1     later_1.3.0      grid_4.2.0       jsonlite_1.8.0  
-[41] gtable_0.3.0     lifecycle_1.0.1  DBI_1.1.2        git2r_0.30.1    
-[45] magrittr_2.0.3   scales_1.2.0     cli_3.3.0        stringi_1.7.6   
-[49] farver_2.1.0     fs_1.5.2         promises_1.2.0.1 xml2_1.3.3      
-[53] bslib_0.3.1      ellipsis_0.3.2   generics_0.1.2   vctrs_0.4.1     
-[57] tools_4.2.0      glue_1.6.2       hms_1.1.1        processx_3.5.3  
-[61] fastmap_1.1.0    yaml_2.3.5       colorspace_2.0-3 rvest_1.0.2     
-[65] knitr_1.39       haven_2.5.0      sass_0.4.1      </code></pre>
+ [1] httr_1.4.3        sass_0.4.1        jsonlite_1.8.0    viridisLite_0.4.0
+ [5] modelr_0.1.8      bslib_0.3.1       assertthat_0.2.1  getPass_0.2-2    
+ [9] highr_0.9         cellranger_1.1.0  yaml_2.3.5        pillar_1.7.0     
+[13] backports_1.4.1   glue_1.6.2        digest_0.6.29     promises_1.2.0.1 
+[17] rvest_1.0.2       colorspace_2.0-3  htmltools_0.5.2   httpuv_1.6.5     
+[21] pkgconfig_2.0.3   broom_0.8.0       haven_2.5.0       scales_1.2.0     
+[25] webshot_0.5.3     processx_3.5.3    svglite_2.1.0     whisker_0.4      
+[29] later_1.3.0       tzdb_0.3.0        git2r_0.30.1      generics_0.1.2   
+[33] farver_2.1.0      ellipsis_0.3.2    withr_2.5.0       cli_3.3.0        
+[37] magrittr_2.0.3    crayon_1.5.1      evaluate_0.15     ps_1.7.0         
+[41] fs_1.5.2          fansi_1.0.3       anytime_0.3.9     xml2_1.3.3       
+[45] tools_4.2.0       hms_1.1.1         lifecycle_1.0.1   munsell_0.5.0    
+[49] reprex_2.0.1      callr_3.7.0       kableExtra_1.3.4  compiler_4.2.0   
+[53] jquerylib_0.1.4   systemfonts_1.0.4 rlang_1.0.2       grid_4.2.0       
+[57] rstudioapi_0.13   labeling_0.4.2    rmarkdown_2.14    gtable_0.3.0     
+[61] DBI_1.1.2         R6_2.5.1          knitr_1.39        fastmap_1.1.0    
+[65] utf8_1.2.2        rprojroot_2.0.3   stringi_1.7.6     Rcpp_1.0.8.3     
+[69] vctrs_0.4.1       dbplyr_2.1.1      tidyselect_1.1.2  xfun_0.31        </code></pre>
 </div>
 </div>
 
